@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -103,16 +104,27 @@ public class MainActivity extends AppCompatActivity {
         btn_job.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                myEdit.putString("test", "Job");
+                myEdit.commit();
+
                 Intent intent = new Intent(MainActivity.this, StatusActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.new_right, R.anim.new_left);
-
             }
         });
 
         btn_activity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                myEdit.putString("test", "activity");
+                myEdit.commit();
+
                 Intent intent = new Intent(MainActivity.this, ActivityBasedActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.new_right, R.anim.new_left);
