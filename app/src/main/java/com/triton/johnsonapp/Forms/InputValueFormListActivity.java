@@ -1098,15 +1098,14 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     private GetFieldListRequest getFieldListRequest() {
             GetFieldListRequest getFieldListRequest = new GetFieldListRequest();
-            getFieldListRequest.setGroup_id(activity_id);
-          //   getFieldListRequest.setGroup_id(group_id);
+       //     getFieldListRequest.setGroup_id(activity_id);
+             getFieldListRequest.setGroup_id(group_id);
             getFieldListRequest.setSub_group_id(subgroup_id);
             getFieldListRequest.setJob_id(job_id);
             getFieldListRequest.setUser_id(userid);
             getFieldListRequest.setUser_role(userrole);
             Log.w(TAG, "GetFieldListRequest " + new Gson().toJson(getFieldListRequest));
             return getFieldListRequest;
-
     }
 
     private GetFieldListRequest getFieldListRequest1() {
@@ -1121,7 +1120,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         Log.w(TAG, "GetFieldListRequest " + new Gson().toJson(getFieldListRequest));
         return getFieldListRequest;
     }
-
 
     @SuppressLint("LogNotTimber")
     private void setView(List<GetFieldListResponse.DataBean> dataBeanList, int ITEMS_PER_PAGE, int TOTAL_NUM_ITEMS) {
@@ -2000,9 +1998,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
             GetFieldListResponse getFieldListResponse = new GetFieldListResponse();
             getFieldListResponse.setUser_id(userid);
-            getFieldListResponse.setActivity_id(activity_id);
+            getFieldListResponse.setActivity_id(group_id);
             getFieldListResponse.setJob_id(job_id);
-            getFieldListResponse.setGroup_id(activity_id);
+            getFieldListResponse.setGroup_id(group_id);
             getFieldListResponse.setSub_group_id(subgroup_id);
             getFieldListResponse.setData(dataBeanList);
             getFieldListResponse.setStart_time(currentDateandTime);
