@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.JodaOrg:joda-time:v2.9.4">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.JodaOrg/joda-time/v2.9.4/229a9fa9887f1de0eda66c593a42f544b596c587/joda-time-v2.9.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/modules-2/files-2.1/com.github.JodaOrg/joda-time/v2.9.4/229a9fa9887f1de0eda66c593a42f544b596c587/joda-time-v2.9.4.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.JodaOrg/joda-time/v2.9.4/8966832e3d7636e82ea9219f39cf97af6c58d6fc/joda-time-v2.9.4-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/modules-2/files-2.1/com.github.JodaOrg/joda-time/v2.9.4/8966832e3d7636e82ea9219f39cf97af6c58d6fc/joda-time-v2.9.4-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.JodaOrg/joda-time/v2.9.4/628b6f34625a0389cf37fb11bea0cf39bd93a526/joda-time-v2.9.4-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/modules-2/files-2.1/com.github.JodaOrg/joda-time/v2.9.4/628b6f34625a0389cf37fb11bea0cf39bd93a526/joda-time-v2.9.4-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

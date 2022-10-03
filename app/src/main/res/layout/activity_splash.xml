@@ -19,7 +19,7 @@
         android:layout_marginBottom="@dimen/_60dp"
         android:fontFamily="@font/sourcesanspro_regular"
         android:padding="15dp"
-        android:text="24.06.2022"
+        android:text="26.09.2022"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"

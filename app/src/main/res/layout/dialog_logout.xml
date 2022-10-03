@@ -52,7 +52,6 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:theme="@style/Button1Style"
             android:textColor="#213e9a"/>
 
 
@@ -65,7 +64,6 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:theme="@style/Button1Style"
             android:textColor="#213e9a"/>
 
 

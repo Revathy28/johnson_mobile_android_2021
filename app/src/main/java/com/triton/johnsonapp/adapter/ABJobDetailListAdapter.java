@@ -93,39 +93,77 @@ public class ABJobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.V
 
         }
 
-      /*  if(currentItem.getService_update_at() != null && !currentItem.getService_update_at().equals("")){
-            holder.txt_serv_updatedat.setText("Updated at :"+ currentItem.getService_update_at());
-        }else{
-            holder.txt_serv_updatedat.setText("Updated at : ");
-
-        }
-
-        if(currentItem.getService_created_at() != null && !currentItem.getService_created_at().equals("")){
-            holder.txt_serv_createdat.setText("Created at : "+currentItem.getService_created_at());
-        }else{
-            holder.txt_serv_createdat.setText("Created at : ");
-
-        }*/
+        SharedPreferences sh2 = context.getSharedPreferences("myKey", MODE_PRIVATE);
+    //    String pending = sh2.getString("group_id_continue", "");
+        String s_activity_id = sh2.getString("activity_id", "");
+      //  String statss = sh2.getString("activity_id", "");
+       // Log.d("ffffff",pending);
+        Log.d("ffffffdddd",activity_id + "====" + s_activity_id);
 
         holder.cv_root.setOnClickListener(v -> {
             //Intent intent = new Intent(context, GroupListActivity.class);
-            Intent intent = new Intent(context, ABCustomerDetailsActivity.class);
-            intent.putExtra("activity_id",dataBeanList.get(position).getActivedetail__id());
-            //intent.putExtra("group_id",dataBeanList.get(position).getActivedetail__id());
-            intent.putExtra("group_id",activity_id);
-            Log.w(TAG,"group_id---"+activity_id);
-            intent.putExtra("job_id",dataBeanList.get(position).getJob_detail_no());
-            intent.putExtra("status",status);
-            intent.putExtra("fromactivity",fromactivity);
-            intent.putExtra("job_detail_no",dataBeanList.get(position).getJob_detail_no());
-            intent.putExtra("form_type",form_type);
-            intent.putExtra("UKEY",UKEY);
-            Log.w(TAG,"UKEYYYYY" +UKEY);
-            intent.putExtra("UKEY_DESC",UKEY_DESC);
-            intent.putExtra("new_count",new_count);
-            intent.putExtra("pause_count",pause_count);
-            context.startActivity(intent);
 
+            Intent intent = new Intent(context, ABCustomerDetailsActivity.class);
+                intent.putExtra("activity_id", dataBeanList.get(position).getActivedetail__id());
+                //intent.putExtra("group_id",dataBeanList.get(position).getActivedetail__id());
+                intent.putExtra("group_id", s_activity_id);
+                intent.putExtra("job_id", dataBeanList.get(position).getJob_detail_no());
+                intent.putExtra("status", status);
+                intent.putExtra("fromactivity", fromactivity);
+                intent.putExtra("job_detail_no", dataBeanList.get(position).getJob_detail_no());
+                intent.putExtra("form_type", form_type);
+                Log.w(TAG, "formmm" + form_type);
+                intent.putExtra("UKEY", UKEY);
+                Log.w(TAG, "UKEYYYYY" + UKEY);
+                intent.putExtra("UKEY_DESC", UKEY_DESC);
+                intent.putExtra("new_count", new_count);
+                intent.putExtra("pause_count", pause_count);
+                context.startActivity(intent);
+
+
+//            if((pending.equals(""))) {
+//
+//                Intent intent = new Intent(context, ABCustomerDetailsActivity.class);
+//                intent.putExtra("activity_id", dataBeanList.get(position).getActivedetail__id());
+//                //intent.putExtra("group_id",dataBeanList.get(position).getActivedetail__id());
+//                intent.putExtra("group_id", s_activity_id);
+//                Log.w(TAG, "group_id---" + activity_id);
+//                intent.putExtra("job_id", dataBeanList.get(position).getJob_detail_no());
+//                intent.putExtra("status", status);
+//                intent.putExtra("fromactivity", fromactivity);
+//                intent.putExtra("job_detail_no", dataBeanList.get(position).getJob_detail_no());
+//                intent.putExtra("form_type", form_type);
+//                Log.w(TAG, "formmm" + form_type);
+//                intent.putExtra("UKEY", UKEY);
+//                Log.w(TAG, "UKEYYYYY" + UKEY);
+//                intent.putExtra("UKEY_DESC", UKEY_DESC);
+//                intent.putExtra("new_count", new_count);
+//                intent.putExtra("pause_count", pause_count);
+//                context.startActivity(intent);
+//
+//                Log.d("grrrrr", activity_id);
+//            }
+////            else {
+////
+////                Intent intent = new Intent(context, ABCustomerDetailsActivity.class);
+////                intent.putExtra("activity_id", dataBeanList.get(position).getActivedetail__id());
+////                //intent.putExtra("group_id",dataBeanList.get(position).getActivedetail__id());
+////                intent.putExtra("group_id", s_activity_id);
+////                intent.putExtra("job_id", dataBeanList.get(position).getJob_detail_no());
+////                intent.putExtra("status", status);
+////                intent.putExtra("fromactivity", fromactivity);
+////                intent.putExtra("job_detail_no", dataBeanList.get(position).getJob_detail_no());
+////                intent.putExtra("form_type", form_type);
+////                Log.w(TAG, "formmm" + form_type);
+////                intent.putExtra("UKEY", UKEY);
+////                Log.w(TAG, "UKEYYYYY" + UKEY);
+////                intent.putExtra("UKEY_DESC", UKEY_DESC);
+////                intent.putExtra("new_count", new_count);
+////                intent.putExtra("pause_count", pause_count);
+////                context.startActivity(intent);
+////
+////                Log.d("grrrrr", pending);
+////            }
 
             SharedPreferences sp1 =context.getSharedPreferences("myKey", MODE_PRIVATE);
             SharedPreferences.Editor ed = sp1.edit();

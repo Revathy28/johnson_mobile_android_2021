@@ -49,7 +49,7 @@ public class ViewInfoDetailsActivity extends AppCompatActivity {
     String networkStatus = "",message,activity_id,job_id;
     private String status;
     private String fromactivity;
-    private String job_detail_no;
+    private String job_detail_no,ST_MDH_SEQNO;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.txt_seqno)
@@ -137,6 +137,7 @@ public class ViewInfoDetailsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             job_id = extras.getString("job_id");
+            ST_MDH_SEQNO = extras.getString("ST_MDH_SEQNO");
             Log.w(TAG,"job_id : "+job_id);
 
         }
@@ -262,8 +263,7 @@ public class ViewInfoDetailsActivity extends AppCompatActivity {
         String currentDateandTime = sdf.format(new Date());
         JobFetchAddressRequest jobFetchAddressRequest = new JobFetchAddressRequest();
         jobFetchAddressRequest.setJob_no(job_id);
-
-
+        jobFetchAddressRequest.setST_MDH_SEQNO(ST_MDH_SEQNO);
 
         Log.w(TAG,"checkLocationRequest "+ new Gson().toJson(jobFetchAddressRequest));
         return jobFetchAddressRequest;

@@ -8,6 +8,8 @@ import com.triton.johnsonapp.requestpojo.AttendanceLogoutRequest;
 import com.triton.johnsonapp.requestpojo.BreedTypeRequest1;
 import com.triton.johnsonapp.requestpojo.CheckDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.CheckLocationRequest;
+import com.triton.johnsonapp.requestpojo.Check_local_statusRequest;
+import com.triton.johnsonapp.requestpojo.Delete_storageRequest;
 import com.triton.johnsonapp.requestpojo.FetchRecordByUserIDRequest;
 import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.FormFiveBasedStroeDataRequest;
@@ -37,7 +39,10 @@ import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
 import com.triton.johnsonapp.responsepojo.ActivityPumpChartDropdown;
 import com.triton.johnsonapp.responsepojo.BreedTypeResponse1;
 import com.triton.johnsonapp.responsepojo.CheckDataStoreResponse;
+import com.triton.johnsonapp.responsepojo.Check_local_statusResponse;
+import com.triton.johnsonapp.responsepojo.Delete_StorageResponse;
 import com.triton.johnsonapp.responsepojo.FetchRecordByUserIDResponse;
+import com.triton.johnsonapp.responsepojo.Fetch_rm_info_listResponse;
 import com.triton.johnsonapp.responsepojo.FileUploadResponse;
 import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.FormFiveDataResponse;
@@ -117,6 +122,11 @@ public interface APIInterface {
     @POST("joininspection/getlist_id_test")
     Call<GetFieldListResponse> joinInspectionGetFieldListResponseCall(@Header("Content-Type") String type, @Body GetFieldListRequest getFieldListRequest);
 
+    @POST("joininspection/fetch_saved_data")
+    Call<GetFieldListResponse> joinInspectionFetchDataResponseCall(@Header("Content-Type") String type, @Body GetFieldListRequest getFieldListRequest);
+
+    @POST("data_store_management/fetch_saved_data")
+    Call<GetFieldListResponse> getfieldListFetchDataResponseCall(@Header("Content-Type") String type, @Body GetFieldListRequest getFieldListRequest);
 
     /*Image upload*/
     @Multipart
@@ -136,6 +146,17 @@ public interface APIInterface {
     @POST("joininspection/create")
     Call<FormDataStoreResponse> joinInspectionCreateRequestCall(@Header("Content-Type") String type, @Body GetFieldListResponse getFieldListResponse);
 
+    @POST("joininspection/create_local_value")
+    Call<FormDataStoreResponse> joinInspectionCreate1RequestCall(@Header("Content-Type") String type, @Body GetFieldListResponse getFieldListResponse);
+
+    @POST("joininspection/create_local_value")
+    Call<FormDataStoreResponse> joinInspectionCreate_newRequestCall(@Header("Content-Type") String type, @Body FormFiveDataResponse getFieldListResponse);
+
+       @POST("temp_data_storedata/check_local_storage")
+    Call<Check_local_statusResponse> check_local_statusResponseCall(@Header("Content-Type") String type, @Body Check_local_statusRequest check_local_statusRequest);
+
+    @POST("temp_data_storedata/delete_storage")
+    Call<Delete_StorageResponse> delete_storageResponseCall(@Header("Content-Type") String type, @Body Delete_storageRequest delete_storageRequest);
 
     /*ImageBased form store*/
     @POST("data_store_management/create")
@@ -204,8 +225,14 @@ public interface APIInterface {
     Call<JobFetchAddressResponse> JobFetchAddressRequestCall(@Header("Content-Type") String type, @Body JobFetchAddressRequest jobFetchAddressRequest);
 
     /*view info details */
-    @POST("job_no_managment/fetch_rm_info")
+//    @POST("job_no_managment/fetch_rm_info")
+//    Call<ViewInfoResponse> ViewInfoRequestCall(@Header("Content-Type") String type, @Body JobFetchAddressRequest jobFetchAddressRequest);
+
+    @POST("job_no_managment/fetch_rm_info_single")
     Call<ViewInfoResponse> ViewInfoRequestCall(@Header("Content-Type") String type, @Body JobFetchAddressRequest jobFetchAddressRequest);
+
+    @POST("job_no_managment/fetch_rm_info_list")
+    Call<Fetch_rm_info_listResponse> Fetch_rm_info_listRequestCall(@Header("Content-Type") String type, @Body JobFetchAddressRequest jobFetchAddressRequest);
 
     /*job_no_managmentt get list all*/
     @POST("job_no_managment/get_jobdetail_by_activtiy")

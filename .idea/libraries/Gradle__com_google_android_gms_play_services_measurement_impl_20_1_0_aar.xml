@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.gms:play-services-measurement-impl:20.1.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/5c78e0b7d530a8a09e38ff72b65938cf/transformed/jetified-play-services-measurement-impl-20.1.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5c78e0b7d530a8a09e38ff72b65938cf/transformed/jetified-play-services-measurement-impl-20.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5c78e0b7d530a8a09e38ff72b65938cf/transformed/jetified-play-services-measurement-impl-20.1.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/5c78e0b7d530a8a09e38ff72b65938cf/transformed/jetified-play-services-measurement-impl-20.1.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/5c78e0b7d530a8a09e38ff72b65938cf/transformed/jetified-play-services-measurement-impl-20.1.0/res" />
+      <root url="file://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/5c78e0b7d530a8a09e38ff72b65938cf/transformed/jetified-play-services-measurement-impl-20.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-impl/20.1.0/bf14b647698b0e980cb9dad2e9f4fb0e4c264a44/play-services-measurement-impl-20.1.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-impl/20.1.0/bf14b647698b0e980cb9dad2e9f4fb0e4c264a44/play-services-measurement-impl-20.1.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES />
   </library>

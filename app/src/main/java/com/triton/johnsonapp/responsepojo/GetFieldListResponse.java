@@ -44,25 +44,6 @@ public class GetFieldListResponse {
 
     private String work_status ;
 
-
-    /**
-     * drop_down : []
-     * lift_list : [{"left":""},{"left":""},{"left":""}]
-     * _id : 61c5696c3c5cfc7d49dfa221
-     * cat_id :
-     * field_name : LIFT WELL DIMENTION
-     * field_type : LIFT
-     * field_value :
-     * field_length : 3
-     * field_comments : clear Width
-     * field_update_reason :
-     * date_of_create :
-     * date_of_update :
-     * created_by :
-     * updated_by :
-     * __v : 0
-     */
-
     private List<DataBean> Data;
 
     public GetFieldListResponse() {

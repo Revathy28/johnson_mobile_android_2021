@@ -103,7 +103,7 @@ public class FieldListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.getStringListener = getStringListener;
         this.getTextAreaListener = getTextAreaListener;
         this.getSpinnerListener = getSpinnerListener;
-        this.getNumberListener = getNumberListener;
+       this.getNumberListener = getNumberListener ;
         this.getDateTimeListener = getDateTimeListener;
         this.getFileUploadListener = getFileUploadListener;
         this.getDigitalSignUploadListener = getDigitalSignUploadListener;

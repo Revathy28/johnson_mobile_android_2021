@@ -1,15 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.tntkhang:full-screen-image-view-library:1.1.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1b7584e0ccd32a0658dc1a68ac8bf9db/transformed/jetified-full-screen-image-view-library-1.1.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1b7584e0ccd32a0658dc1a68ac8bf9db/transformed/jetified-full-screen-image-view-library-1.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1b7584e0ccd32a0658dc1a68ac8bf9db/transformed/jetified-full-screen-image-view-library-1.1.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/6c8482225ffd1d3da25fb9852f44b9d2/transformed/jetified-full-screen-image-view-library-1.1.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/6c8482225ffd1d3da25fb9852f44b9d2/transformed/jetified-full-screen-image-view-library-1.1.0/res" />
+      <root url="file://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/6c8482225ffd1d3da25fb9852f44b9d2/transformed/jetified-full-screen-image-view-library-1.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.tntkhang/full-screen-image-view-library/1.1.0/52e4fec1a2635d299a546182651e67d35bab8ac5/full-screen-image-view-library-1.1.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/modules-2/files-2.1/com.github.tntkhang/full-screen-image-view-library/1.1.0/52e4fec1a2635d299a546182651e67d35bab8ac5/full-screen-image-view-library-1.1.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.tntkhang/full-screen-image-view-library/1.1.0/b1f16a1a55c7d74a14678919b2aba44cb6323f23/full-screen-image-view-library-1.1.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/modules-2/files-2.1/com.github.tntkhang/full-screen-image-view-library/1.1.0/b1f16a1a55c7d74a14678919b2aba44cb6323f23/full-screen-image-view-library-1.1.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -93,8 +93,10 @@ public class ActivityStatusActivity extends AppCompatActivity {
             Log.w(TAG, "activity_id -->" + activity_id + " status : " + status);
 
             SharedPreferences sh1 = getSharedPreferences("mykey", MODE_PRIVATE);
-            String statss = sh1.getString("status", "");
-            Log.e("statussssss11", statss);
+            String statss = sh1.getString("activity_id", "");
+            Log.e("group_id", statss);
+
+            Log.e("activity_id -->" , activity_id);
         }
         img_logout.setOnClickListener(new View.OnClickListener() {
             @Override

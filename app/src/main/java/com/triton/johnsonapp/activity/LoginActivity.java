@@ -333,6 +333,11 @@ private void ShowPopup()
                            /* if (imeicode.equals(ID) ) {*/
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
+
+                            Log.e("UserId", response.body().getData().getUser_id());
+
+                            Log.e("_id", response.body().getData().get_id());
+
                                  userid = response.body().getData().get_id();
                             sessionManager.createSessionLogin(
                                     response.body().getData().get_id(),
@@ -401,6 +406,7 @@ private void ShowPopup()
         loginRequest.setUser_id(userNameMaterialEditText.getText().toString().trim());
         loginRequest.setUser_password(passwordMaterialEditText.getText().toString());
         loginRequest.setLast_login_time(currentDateandTime);
+        loginRequest.setDevice_id(ID);
         Log.w(TAG, "loginRequest " + new Gson().toJson(loginRequest));
         return loginRequest;
     }

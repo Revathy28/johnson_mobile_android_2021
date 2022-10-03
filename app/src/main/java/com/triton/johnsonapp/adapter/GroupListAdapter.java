@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.triton.johnsonapp.Fetch_RM_Info_ListActivity;
 import com.triton.johnsonapp.Forms.ImageBasedInputFormActivity;
 import com.triton.johnsonapp.Forms.InputFormFiveActivity;
 import com.triton.johnsonapp.Forms.InputValueFormListActivity;
@@ -97,6 +98,8 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
         }*/
 
+       // Log.d("grrrrr", dataBeanList.get(position).get_id());
+
         holder.cv_root.setOnClickListener(v -> {
 
             if(dataBeanList.get(position).getSub_group_status()!=null&&dataBeanList.get(position).getSub_group_status().equals("true")){
@@ -109,6 +112,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                 intent.putExtra("fromactivity",fromactivity);
                 context.startActivity(intent);
 
+               // Log.d("grrrrr", dataBeanList.get(position).get_id());
             }
 
             else {
@@ -136,6 +140,9 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         myEdi1.putInt("form_type", form_type);
                         Log.e("form_typeee", String.valueOf(form_type));
                         myEdi1.commit();
+
+
+                        Log.d("gerrrrr", dataBeanList.get(position).get_id());
                     }
                     else if(dataBeanList.get(position).getForm_type().equals("2")){
                         Intent intent = new Intent(context, ImageBasedInputFormActivity.class);
@@ -147,6 +154,8 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("status",status);
                         intent.putExtra("fromactivity",fromactivity);
                         context.startActivity(intent);
+
+                        Log.d("act_gr", dataBeanList.get(position).get_id());
                     }
                     else if(dataBeanList.get(position).getForm_type().equals("3")){
                         Intent intent = new Intent(context, RowBasedInputFormActivity.class);
@@ -158,6 +167,8 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("status",status);
                         intent.putExtra("fromactivity",fromactivity);
                         context.startActivity(intent);
+
+                        Log.d("act_gr1", dataBeanList.get(position).get_id());
                     }
                     else if(dataBeanList.get(position).getForm_type().equals("4")){
 
@@ -174,6 +185,8 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                             intent.putExtra("status",status);
                             intent.putExtra("fromactivity",fromactivity);
                             context.startActivity(intent);
+
+                        Log.d("act_gr2", dataBeanList.get(position).get_id());
 
                       /*
                             form_type= Integer.parseInt(dataBeanList.get(position).getForm_type());
@@ -207,7 +220,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         context.startActivity(intent);*/
                     }
                     else if(dataBeanList.get(position).getForm_type().equals("5")){
-                        Intent intent = new Intent(context, InputFormFiveActivity.class);
+                        Intent intent = new Intent(context, Fetch_RM_Info_ListActivity.class);
                         intent.putExtra("_id",dataBeanList.get(position).get_id());
                         intent.putExtra("activity_id",dataBeanList.get(position).getActivity_id());
                         intent.putExtra("job_detail_id",dataBeanList.get(position).getJob_detail_id());
@@ -217,6 +230,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("status",status);
                         intent.putExtra("fromactivity",fromactivity);
                         context.startActivity(intent);
+                        Log.d("act_gr3", dataBeanList.get(position).get_id());
                     }
                 }
 

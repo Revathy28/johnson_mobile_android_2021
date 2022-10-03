@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -86,18 +88,30 @@ public class DownloadapkfileActivity extends AppCompatActivity {
 
 
 
-                DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                Uri uri= Uri.parse(apk_link);
-                DownloadManager.Request request = new DownloadManager.Request(uri);
-                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-                request.setTitle("Jlsmart APK -" + apk_version);
-                request.setDescription("Jlsmart download using DownloadManager.");
+//                DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+//                Uri uri= Uri.parse(apk_link);
+//                DownloadManager.Request request = new DownloadManager.Request(uri);
+//                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+//                request.setTitle("Jlsmart APK -" + apk_version);
+//                request.setDescription("Jlsmart download using DownloadManager.");
+//
+//                request.allowScanningByMediaScanner();
+//                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+//                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"Jlsmart -"+ apk_version);
+//                //  request.setMimeType("*/*");
+//                downloadManager.enqueue(request);
 
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"Jlsmart -"+ apk_version);
-                //  request.setMimeType("*/*");
-                downloadManager.enqueue(request);
+                String urlString = apk_link;
+                Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(urlString));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setPackage("com.android.chrome");
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException ex) {
+                    // Chrome browser presumably not installed so allow user to choose instead
+                    intent.setPackage(null);
+                    startActivity(intent);
+                }
 
             }
         });

@@ -6,13 +6,13 @@ public class FormFiveDataRequest {
     private String sub_group_id;
     private String job_id;
     private String user_id ;
-    private int ST_MDH_SEQNO;
+    private String ST_MDH_SEQNO;
 
-    public int getST_MDH_SEQNO() {
+    public String getST_MDH_SEQNO() {
         return ST_MDH_SEQNO;
     }
 
-    public void setST_MDH_SEQNO(int ST_MDH_SEQNO) {
+    public void setST_MDH_SEQNO(String ST_MDH_SEQNO) {
         this.ST_MDH_SEQNO = ST_MDH_SEQNO;
     }
 

@@ -247,14 +247,15 @@ public class ActivitySelectEngineerPopup extends AppCompatActivity implements Pe
                             dialog.dismiss();
 
                             showSubmittedSuccessful();
-
-
                         }
-
+                        else {
+                            dialog.dismiss();
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        }
 
                     } else {
                         dialog.dismiss();
-
+                       // Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     }
                 }
             }

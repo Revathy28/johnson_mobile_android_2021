@@ -1,5 +1,7 @@
 package com.triton.johnsonapp.activitybased;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -60,6 +62,7 @@ import com.triton.johnsonapp.api.RetrofitClient;
 import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
 import com.triton.johnsonapp.requestpojo.AttendanceLogoutRequest;
 import com.triton.johnsonapp.requestpojo.GetJobDetailByActivityRequest;
+import com.triton.johnsonapp.responsepojo.ActivityGetListNumberResponse;
 import com.triton.johnsonapp.responsepojo.GetJobDetailByActivityResponse;
 import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 import com.triton.johnsonapp.responsepojo.SuccessResponse;
@@ -69,6 +72,7 @@ import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -117,6 +121,10 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
     @BindView(R.id.edt_search)
     EditText edt_search;
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.img_clearsearch)
+    ImageView img_clearsearch;
+
     private String search_string ="";
     SessionManager session;
 
@@ -128,17 +136,19 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
     private double latitude;
     private double longitude;
 
-    private String activity_id;
+    private String activity_id,back="";
     private String UKEY;
     private String UKEY_DESC;
     private int form_type;
     private String status ="";
 
-    private String SMU_DWNFLAG = "";
+    private String SMU_DWNFLAG = "",Group_id;
     private int  new_count;
     private int  pause_count;
     public static final String MyPREFERENCES = "MyPrefs" ;
     SharedPreferences sharedpreferences;
+    List<GetJobDetailByActivityResponse.DataBean> dataBeanList;
+    ABJobDetailListAdapter abJobDetailListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,48 +172,94 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
             activity_id = extras.getString("activity_id");
             status = extras.getString("status");
             UKEY = extras.getString("UKEY");
+            Group_id=extras.getString("group_id");
+            back =extras.getString("back");
             UKEY_DESC = extras.getString("UKEY_DESC");
             form_type = extras.getInt("form_type");
+            Log.w(TAG,"ftype"+form_type);
+
+            Log.e("activity_id -->" , activity_id);
+
+
+         //   Log.d("gggggggggggg",Group_id);
+
             new_count = extras.getInt("new_count");
 
             Log.w(TAG,"ukey"+UKEY);
             pause_count = extras.getInt("pause_count");
+        }
+
+       // Toasty.warning(getApplicationContext(),"back----->" + back,Toasty.LENGTH_LONG).show();
+
+        if(back == null){
 
             SharedPreferences sharedPref1= getApplicationContext().getSharedPreferences("myKey", MODE_PRIVATE);
             SharedPreferences.Editor edit = sharedPref1.edit();
             edit.putString("UKEY",UKEY );
-          //  Log.e("keyyyyyyyy",  UKEY);
+            edit.putString("activity_id",activity_id);
+            edit.putString(" " + "",activity_id);
             edit.apply();
 
-            SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("myKey", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putInt("form_type",form_type );
-            Log.e("formmm", String.valueOf(form_type));
-            editor.apply();
-            Log.w(TAG,"activity_id -->"+activity_id+" status : "+status);
+        }
+        else {
 
-            if(status != null && status.equalsIgnoreCase("New")){
-                SMU_DWNFLAG = "N";
-            }else if(status != null && status.equalsIgnoreCase("Pause")){
-                SMU_DWNFLAG = "Y";
-            }
-
+            SharedPreferences sharedPref1= getApplicationContext().getSharedPreferences("myKey", MODE_PRIVATE);
+            SharedPreferences.Editor edit = sharedPref1.edit();
+            edit.putString("UKEY",UKEY );
+            edit.putString("activity_id",Group_id);
+            edit.putString(" " + "",activity_id);
+            edit.apply();
 
         }
+
+
+        Log.e("keyyyyyyyy",  Group_id + "----->" + activity_id);
+
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("myKey", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("form_type",form_type );
+        Log.e("formmm", String.valueOf(form_type));
+        editor.apply();
+        Log.w(TAG,"activity_id -->"+activity_id+" status : "+status);
+
+        if(status != null && status.equalsIgnoreCase("New")){
+            SMU_DWNFLAG = "N";
+        }else if(status != null && status.equalsIgnoreCase("Pause")){
+            SMU_DWNFLAG = "Y";
+        }
+
+//        edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+//                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                    search_string = textView.getText().toString();
+//                    getJobDetailByActivityResponseCall();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    search_string = textView.getText().toString();
-                    getJobDetailByActivityResponseCall();
-                    return true;
-                }
+                img_clearsearch.setVisibility(View.VISIBLE);
+                String Searchvalue = edt_search.getText().toString();
+                Log.w(TAG,"Search Value---"+Searchvalue);
+                filter(Searchvalue);
                 return false;
             }
         });
 
-
+        img_clearsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edt_search.setText("");
+            //    rv_activitybasedlist.setVisibility(View.VISIBLE);
+                getJobDetailByActivityResponseCall(userid,SMU_DWNFLAG,UKEY);
+                img_clearsearch.setVisibility(View.INVISIBLE);
+            }
+        });
 
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,7 +277,9 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
         }
         else {
 
-            getJobDetailByActivityResponseCall();
+          //  getJobDetailByActivityResponseCall();
+
+            getJobDetailByActivityResponseCall(userid,SMU_DWNFLAG,UKEY);
 
            /* List<GetServiceListResponse.DataBean> dataBeanList = new ArrayList<>();
 
@@ -248,21 +306,60 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
 
     }
 
+    private void filter(String s) {
+        List<GetJobDetailByActivityResponse.DataBean> filteredlist = new ArrayList<>();
+        for(GetJobDetailByActivityResponse.DataBean item : dataBeanList)
+        {
+            if(item.getJob_detail_no().toLowerCase().contains(s.toLowerCase()))
+            {
+                Log.w(TAG,"filter----"+item.getJob_detail_no().toLowerCase().contains(s.toLowerCase()));
+                filteredlist.add(item);
+            }
+        }
+        if(filteredlist.isEmpty())
+        {
+            Toast.makeText(this,"No Data Found ... ",Toast.LENGTH_SHORT).show();
+            rv_jobdetaillist.setVisibility(View.GONE);
+            txt_no_records.setVisibility(View.VISIBLE);
+            txt_no_records.setText("No Parts Available");
+        }else
+        {
+            abJobDetailListAdapter.filterList(filteredlist);
+        }
+
+    }
+
 
     // default back button action
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(ActivityJobListActivity.this, ActivityStatusActivity.class);
-        intent.putExtra("status",status);
-        intent.putExtra("activity_id",activity_id);
-        intent.putExtra("form_type",form_type);
-        intent.putExtra("UKEY",UKEY);
-        intent.putExtra("UKEY_DESC",UKEY_DESC);
-        intent.putExtra("new_count",new_count);
-        intent.putExtra("pause_count",pause_count);
-        startActivity(intent);
-        overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
+        if(back == null){
+            Intent intent = new Intent(ActivityJobListActivity.this, ActivityStatusActivity.class);
+            intent.putExtra("status",status);
+            intent.putExtra("activity_id",activity_id);
+            intent.putExtra("form_type",form_type);
+            intent.putExtra("UKEY",UKEY);
+            intent.putExtra("UKEY_DESC",UKEY_DESC);
+            intent.putExtra("new_count",new_count);
+            intent.putExtra("pause_count",pause_count);
+            startActivity(intent);
+            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+            Log.d("bck_group",activity_id);
+        }
+        else {
+            Intent intent = new Intent(ActivityJobListActivity.this, ActivityStatusActivity.class);
+            intent.putExtra("status",status);
+            intent.putExtra("activity_id",Group_id);
+            intent.putExtra("form_type",form_type);
+            intent.putExtra("UKEY",UKEY);
+            intent.putExtra("UKEY_DESC",UKEY_DESC);
+            intent.putExtra("new_count",new_count);
+            intent.putExtra("pause_count",pause_count);
+            startActivity(intent);
+            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+            Log.d("bck_group",activity_id);
+        }
         SharedPreferences sp1 = getSharedPreferences("myKey", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp1.edit();
         ed.putString("status", status);
@@ -274,58 +371,57 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
 
 
     @SuppressLint("LogNotTimber")
-    private void getJobDetailByActivityResponseCall() {
-        dialog = new Dialog(ActivityJobListActivity.this, R.style.NewProgressDialog);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.progroess_popup);
-        dialog.show();
+    private void getJobDetailByActivityResponseCall(String smu_techmobno,String smu_dwnflag,String smu_ukey) {
+//        dialog = new Dialog(ActivityJobListActivity.this, R.style.NewProgressDialog);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setContentView(R.layout.progroess_popup);
+//        dialog.show();
 
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<GetJobDetailByActivityResponse> call = apiInterface.getJobDetailByActivityResponseCall(RestUtils.getContentType(), getJobDetailByActivityRequest());
+        Call<GetJobDetailByActivityResponse> call = apiInterface.getJobDetailByActivityResponseCall(RestUtils.getContentType(), getJobDetailByActivityRequest(smu_techmobno,smu_dwnflag,smu_ukey));
         Log.w(TAG,"JobNoManagementResponse url  :%s"+" "+ call.request().url().toString());
-
         call.enqueue(new Callback<GetJobDetailByActivityResponse>() {
-            @SuppressLint("LogNotTimber")
-            @Override
-            public void onResponse(@NonNull Call<GetJobDetailByActivityResponse> call, @NonNull Response<GetJobDetailByActivityResponse> response) {
+                    @SuppressLint("LogNotTimber")
+                    @Override
+                    public void onResponse(@NonNull Call<GetJobDetailByActivityResponse> call, @NonNull Response<GetJobDetailByActivityResponse> response) {
+                        Log.w(TAG, "Jobno Find Response" + new Gson().toJson(response.body()));
 
-                Log.w(TAG,"JobNoManagementResponse" + new Gson().toJson(response.body()));
-                if (response.body() != null) {
-                    message = response.body().getMessage();
-                    if (200 == response.body().getCode()) {
-                        if(response.body().getData() != null){
+                        if (response.body() != null) {
 
-                            dialog.dismiss();
-                            List<GetJobDetailByActivityResponse.DataBean> dataBeanList = response.body().getData();
+                            message = response.body().getMessage();
+                            Log.d("message", message);
 
+                            if (200 == response.body().getCode()) {
+                                if (response.body().getData() != null) {
+                                    dataBeanList = response.body().getData();
 
-                            if(dataBeanList != null && dataBeanList.size()>0){
-                                rv_jobdetaillist.setVisibility(View.VISIBLE);
-                                setView(dataBeanList);
+                                    if(dataBeanList != null && dataBeanList.size()>0){
+                                        rv_jobdetaillist.setVisibility(View.VISIBLE);
+                                        setView(dataBeanList);
 
-                                txt_no_records.setVisibility(View.GONE);
+                                        txt_no_records.setVisibility(View.GONE);
+                                    }
+
+                                    else {
+                                        rv_jobdetaillist.setVisibility(View.GONE);
+                                        txt_no_records.setVisibility(View.VISIBLE);
+
+                                        txt_no_records.setText("No Job Detail Available");
+                                    }
+
+                                }
+
+                            } else if (400 == response.body().getCode()) {
+                                if (response.body().getMessage() != null && response.body().getMessage().equalsIgnoreCase("There is already a user registered with this email id. Please add new email id")) {
+
+                                }
+                            } else {
+
+                                Toasty.warning(getApplicationContext(), "" + response.body().getMessage(), Toasty.LENGTH_LONG).show();
                             }
-
-                            else {
-                                rv_jobdetaillist.setVisibility(View.GONE);
-                                txt_no_records.setVisibility(View.VISIBLE);
-
-                                txt_no_records.setText("No Job Detail Available");
-                            }
-
                         }
 
-
-                    } else {
-                        dialog.dismiss();
-                        Toasty.warning(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
-
-                        //showErrorLoading(response.body().getMessage());
                     }
-                }
-
-
-            }
 
             @SuppressLint("LongLogTag")
             @Override
@@ -337,7 +433,7 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
         });
 
     }
-    private GetJobDetailByActivityRequest getJobDetailByActivityRequest() {
+    private GetJobDetailByActivityRequest getJobDetailByActivityRequest(String smu_techmobno,String smu_dwnflag,String smu_ukey) {
         /*
          * SMU_TECHMOBNO : 9043456963
          * SMU_DWNFLAG : Y
@@ -346,9 +442,9 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
 
 
         GetJobDetailByActivityRequest getJobDetailByActivityRequest = new GetJobDetailByActivityRequest();
-        getJobDetailByActivityRequest.setSMU_TECHMOBNO(userid);
-        getJobDetailByActivityRequest.setSMU_DWNFLAG(SMU_DWNFLAG);
-        getJobDetailByActivityRequest.setSMU_UKEY(UKEY);
+        getJobDetailByActivityRequest.setSMU_TECHMOBNO(smu_techmobno);
+        getJobDetailByActivityRequest.setSMU_DWNFLAG(smu_dwnflag);
+        getJobDetailByActivityRequest.setSMU_UKEY(smu_ukey);
 
         Log.w(TAG,"getJobDetailByActivityRequest "+ new Gson().toJson(getJobDetailByActivityRequest));
         return getJobDetailByActivityRequest;
@@ -358,7 +454,7 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
     private void setView(List<GetJobDetailByActivityResponse.DataBean> dataBeanList) {
         rv_jobdetaillist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_jobdetaillist.setItemAnimator(new DefaultItemAnimator());
-        ABJobDetailListAdapter abJobDetailListAdapter = new ABJobDetailListAdapter(this, dataBeanList,status,TAG,form_type,activity_id,UKEY,new_count,pause_count,UKEY_DESC);
+        abJobDetailListAdapter = new ABJobDetailListAdapter(this, dataBeanList,status,TAG,form_type,activity_id,UKEY,new_count,pause_count,UKEY_DESC);
         rv_jobdetaillist.setAdapter(abJobDetailListAdapter);
 
     }

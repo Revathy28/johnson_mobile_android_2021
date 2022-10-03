@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.libraries.places:places:2.5.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/22e89e363a10666f6e04c6028e2e9afe/transformed/jetified-places-2.5.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/22e89e363a10666f6e04c6028e2e9afe/transformed/jetified-places-2.5.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/22e89e363a10666f6e04c6028e2e9afe/transformed/jetified-places-2.5.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/22e89e363a10666f6e04c6028e2e9afe/transformed/jetified-places-2.5.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/22e89e363a10666f6e04c6028e2e9afe/transformed/jetified-places-2.5.0/res" />
+      <root url="file://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/22e89e363a10666f6e04c6028e2e9afe/transformed/jetified-places-2.5.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.libraries.places/places/2.5.0/f0db63141ad8b9ed3b8a8c8380661b172816b364/places-2.5.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/modules-2/files-2.1/com.google.android.libraries.places/places/2.5.0/f0db63141ad8b9ed3b8a8c8380661b172816b364/places-2.5.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES />
   </library>

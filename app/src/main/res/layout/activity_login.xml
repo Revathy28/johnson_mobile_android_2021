@@ -303,7 +303,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                       android:fontFamily="@font/sourcesanspro_regular"
-                    android:text="23.05.2022"
+                    android:text="26.09.2022"
                      android:layout_marginTop="@dimen/_40dp"
                      android:textAlignment="center"
                     android:textColor="@color/colorPrimary"

@@ -76,86 +76,86 @@ public class SplashActivity extends AppCompatActivity {
                     String Submitted_status = response.body().getStatus();
                     Log.w(TAG,"dATARE-000000--"+response.body().getData().getVersion());
 
-//                    if(Submitted_status !=null && Submitted_status.equalsIgnoreCase("Success"))
-//                    {
-//                        Log.w(TAG,"dATA"+response.body().getData().getVersion());
-//
-//                        if(response.body().getData().getVersion().equals("24.06.2022")){
-//                            Thread timerThread = new Thread() {
-//                                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//                                public void run() {
-//                                    try {
-//                                        sleep(3000);
-//                                    } catch (InterruptedException e) {
-//                                        e.printStackTrace();
-//                                    } finally {
-//
-//
-//                                        Log.w(TAG,"ELSE"+sessionManager.isLoggedIn());
-//
-//
-//                                        // check whether user is logged in or not
-//                                        if (sessionManager.isLoggedIn()) {
-//                                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-//                                            startActivity(intent);
-//                                            overridePendingTransition(R.anim.new_right, R.anim.new_left);
-//                                        }
-//
-//                                        else {
-//
-//                                            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-//                                            startActivity(intent);
-//                                            overridePendingTransition(R.anim.new_right, R.anim.new_left);
-//                                        }
-//
-//                                    }
-//                                }
-//                            };
-//                            timerThread.start();
-//                        }
-//                        else{
-//                            Log.w(TAG,"dATA-0000--"+response.body().getData().getVersion());
-//                            String apk_link = response.body().getData().getApk_link();
-//                            String apk_version = response.body().getData().getVersion();
-//                            Intent intent = new Intent(SplashActivity.this, DownloadapkfileActivity.class);
-//                            intent.putExtra("apk_link",apk_link);
-//                            intent.putExtra("apk_version",apk_version);
-//                            startActivity(intent);
-//                        }
-//                }
+                    if(Submitted_status !=null && Submitted_status.equalsIgnoreCase("Success"))
+                    {
+                        Log.w(TAG,"dATA"+response.body().getData().getVersion());
 
-                    Thread timerThread = new Thread() {
-                        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-                        public void run() {
-                            try {
-                                sleep(3000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            } finally {
+                        if(response.body().getData().getVersion().equals("26.09.2022")){
+                            Thread timerThread = new Thread() {
+                                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                                public void run() {
+                                    try {
+                                        sleep(3000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } finally {
 
 
-                                Log.w(TAG,"ELSE"+sessionManager.isLoggedIn());
+                                        Log.w(TAG,"ELSE"+sessionManager.isLoggedIn());
 
 
-                                // check whether user is logged in or not
-                                if (sessionManager.isLoggedIn()) {
+                                        // check whether user is logged in or not
+                                        if (sessionManager.isLoggedIn()) {
+                                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                                        }
 
-                                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                                        else {
+
+                                            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                                            startActivity(intent);
+                                            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                                        }
+
+                                    }
                                 }
-
-                                else {
-
-                                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                                    startActivity(intent);
-                                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
-                                }
-
-                            }
+                            };
+                            timerThread.start();
                         }
-                    };
-                    timerThread.start();
+                        else{
+                            Log.w(TAG,"dATA-0000--"+response.body().getData().getVersion());
+                            String apk_link = response.body().getData().getApk_link();
+                            String apk_version = response.body().getData().getVersion();
+                            Intent intent = new Intent(SplashActivity.this, DownloadapkfileActivity.class);
+                            intent.putExtra("apk_link",apk_link);
+                            intent.putExtra("apk_version",apk_version);
+                            startActivity(intent);
+                        }
+                }
+
+//                    Thread timerThread = new Thread() {
+//                        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//                        public void run() {
+//                            try {
+//                                sleep(3000);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            } finally {
+//
+//
+//                                Log.w(TAG,"ELSE"+sessionManager.isLoggedIn());
+//
+//
+//                                // check whether user is logged in or not
+//                                if (sessionManager.isLoggedIn()) {
+//
+//                                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//                                    startActivity(intent);
+//                                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
+//                                }
+//
+//                                else {
+//
+//                                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+//                                    startActivity(intent);
+//                                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
+//                                }
+//
+//                            }
+//                        }
+//                    };
+//                    timerThread.start();
 
                     }else {
 

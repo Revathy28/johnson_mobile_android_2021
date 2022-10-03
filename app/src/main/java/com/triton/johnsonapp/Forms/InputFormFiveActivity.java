@@ -2,22 +2,18 @@ package com.triton.johnsonapp.Forms;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,7 +22,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +33,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyLog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
@@ -52,14 +48,18 @@ import com.triton.johnsonapp.interfaces.GetDamageQtyListner;
 import com.triton.johnsonapp.interfaces.GetExcessListner;
 import com.triton.johnsonapp.interfaces.GetRemarksListner;
 import com.triton.johnsonapp.interfaces.GetShortListner;
+import com.triton.johnsonapp.requestpojo.Delete_storageRequest;
 import com.triton.johnsonapp.requestpojo.FormFiveDataRequest;
+import com.triton.johnsonapp.requestpojo.GetFieldListRequest;
 import com.triton.johnsonapp.requestpojo.JobFetchAddressRequest;
+import com.triton.johnsonapp.responsepojo.Delete_StorageResponse;
+import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.FormFiveDataResponse;
+import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
 import com.triton.johnsonapp.responsepojo.SuccessResponse;
 import com.triton.johnsonapp.responsepojo.ViewInfoResponse;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
-import com.triton.johnsonapp.utils.DBMain;
 import com.triton.johnsonapp.utils.RestUtils;
 
 import java.text.SimpleDateFormat;
@@ -78,10 +78,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InputFormFiveActivity extends AppCompatActivity implements GetAcceptQtyListner, GetDamageQtyListner, GetExcessListner, GetShortListner, GetRemarksListner {
-
-
-
-
 
     private final String TAG ="InputFormFiveActivity";
     String _id,activity_id,job_detail_id;
@@ -157,9 +153,6 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     @BindView(R.id.rl_viewinfo)
     RelativeLayout rl_viewinfo;
 
-
-
-
     private int totalPages;
     private int currentPage = 0;
 
@@ -169,7 +162,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     private LinearLayoutManager linearlayout;
     FormFiveListAdapter formFiveListAdapter;
     private Dialog alertDialog;
-    private int ST_MDH_SEQNO;
+    private String ST_MDH_SEQNO;
     private Dialog submittedSuccessfulalertdialog;
     private int startItem = 0;
 
@@ -208,6 +201,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
 
             job_detail_no = extras.getString("job_detail_no");
             UKEY_DESC = extras.getString("UKEY_DESC");
+            ST_MDH_SEQNO = extras.getString("ST_MDH_SEQNO");
 
 
             Log.w(TAG,"_id -->"+_id);
@@ -254,6 +248,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ViewInfoDetailsActivity.class);
                 intent.putExtra("job_id",job_id);
+                intent.putExtra("ST_MDH_SEQNO",ST_MDH_SEQNO);
                 startActivity(intent);
             }
         });
@@ -265,11 +260,10 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
 
         }
         else {
-            ViewInfoRequestCall();
+            //ViewInfoRequestCall();
+            formFiveDataResponseCall();
 
         }
-
-
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @SuppressLint({"ResourceAsColor", "SetTextI18n"})
@@ -277,8 +271,6 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
             @Override
             public void onClick(View view) {
                 boolean flag = true;
-
-
 
                 Log.w(TAG, "btnnext currentPage : " + currentPage);
                 int currentpagesize = currentPage;
@@ -288,17 +280,6 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                 List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanListS  = new ArrayList<>();
                 startItem = currentPage * ITEMS_PER_PAGE;
                 Log.w(TAG, "btnnext startItem : "  + startItem);
-/*
-                rv_formfive.scrollToPosition(startItem);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        int startItem = currentPage * ITEMS_PER_PAGE;
-                        rv_formfive.smoothScrollToPosition(startItem);
-                    }
-                }, 50);
-
-*/
 
                 if (currentPage == 0) {
                     for (int i = 0; i <6; i++) {
@@ -322,10 +303,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                         }
                         Log.w(TAG, "index : "  + i+" endvaleue "+ (enditem-1));
 
-
                     }
-
-
                 }
                 Log.w(TAG, "btnnext flag : " + flag);
 
@@ -334,11 +312,6 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                     startItem = currentPage * ITEMS_PER_PAGE;
                     Log.w(TAG, "currentPage flag : " + currentPage+" startItem : "+startItem+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE);
                 }
-
-
-
-
-
 
                 int condition = 0;
 
@@ -365,23 +338,16 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                     }
                     Log.w(TAG, "btnnext startItem----->"+startItem+" condition -->"+condition);
 
-
-
                     for (int i = startItem; i < dataBeanList.size(); i++) {
                         dataBeanListS.add(dataBeanList.get(i));
 
 
 
                     }
-
-
                     setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
                     Log.w(TAG, "btnnext  setView  ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanListS : "+new Gson().toJson(dataBeanListS));
 
 
-
-                    // enableDisableButtons();
-                    // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
                     btn_next.setEnabled(false);
 
                     btn_prev.setBackgroundResource(R.drawable.blue_button_background_with_radius);
@@ -401,28 +367,20 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                         for (int i = startItem; i < dataBeanList.size(); i++) {
                             Log.w(TAG,"dataBeanList.get(i) : "+dataBeanList.get(i));
                             dataBeanListS.add(dataBeanList.get(i));
-
                         }
 
                         Log.w(TAG, "btnnext else dataBeanList" + new Gson().toJson(dataBeanListS));
                         setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
                         Log.w(TAG, "btnnext else setView " + " ITEMS_PER_PAGE : " + ITEMS_PER_PAGE + " TOTAL_NUM_ITEMS : " + TOTAL_NUM_ITEMS + " dataBeanListS :  " + new Gson().toJson(dataBeanListS));
                         toggleButtons();
+                        Data.setMaterial_details(dataBeanList);
+                        join();
                     }else{
 
                         showErrorLoading();
 
-
-
                     }
-
                 }
-
-
-
-
-
-
             }
         });
         btn_prev.setOnClickListener(new View.OnClickListener() {
@@ -489,7 +447,8 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
 
                     if(flag){
                         Data.setMaterial_details(dataBeanList);
-                        formFiveStroeDataRequestCall();
+                       // formFiveStroeDataRequestCall();
+                        showPopupInputFormFive();
                     }else{
                         Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -550,14 +509,10 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
             public void onClick(View view) {
                 edt_search.setText("");
                 rv_formfive.setVisibility(View.VISIBLE);
-                ViewInfoRequestCall();
+                //ViewInfoRequestCall();
                 img_clearsearch.setVisibility(View.INVISIBLE);
             }
         });
-
-
-
-
 
     }
     private void showPopupInputFormFive() {
@@ -572,18 +527,18 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
               btn_yes=alertdialog.findViewById(R.id.btn_yes);
             Button btn_no=alertdialog.findViewById(R.id.btn_no);
 
-
-btn_no.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        alertdialog.dismiss();
-
-    }
-});
-
             img_close.setOnClickListener(v -> alertdialog.dismiss());
             Objects.requireNonNull(alertdialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             alertdialog.show();
+
+            btn_no.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    alertdialog.dismiss();
+
+                }
+            });
+
 
             btn_yes.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -896,6 +851,7 @@ btn_no.setOnClickListener(new View.OnClickListener() {
         formFiveDataResponse.setCreated_by("");
         formFiveDataResponse.setUpdated_by("");
         formFiveDataResponse.setUpdate_reason("");
+        formFiveDataResponse.setST_MDH_SEQNO(ST_MDH_SEQNO);
 
         Log.w(TAG, "data_store_management/create_Request form 5 userid " +userid);
         Log.w(TAG, "data_store_management/create_Request form 5 activity_id " +activity_id);
@@ -1028,95 +984,277 @@ btn_no.setOnClickListener(new View.OnClickListener() {
     }
 
     @SuppressLint("LogNotTimber")
-    private void ViewInfoRequestCall() {
+//    private void ViewInfoRequestCall() {
+//        dialog = new Dialog(InputFormFiveActivity.this, R.style.NewProgressDialog);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setContentView(R.layout.progroess_popup);
+//        dialog.show();
+//
+//        APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
+//        Call<ViewInfoResponse> call = apiInterface.ViewInfoRequestCall(RestUtils.getContentType(), jobFetchAddressRequest());
+//        Log.w(TAG,"JobFetchAddressRequestCall url  :%s"+" "+ call.request().url().toString());
+//
+//        call.enqueue(new Callback<ViewInfoResponse>() {
+//            @SuppressLint({"LogNotTimber", "SetTextI18n"})
+//            @Override
+//            public void onResponse(@NonNull Call<ViewInfoResponse> call, @NonNull Response<ViewInfoResponse> response) {
+//
+//                Log.w(TAG,"startWorkRequestCall" + new Gson().toJson(response.body()));
+//                if (response.body() != null) {
+//                    message = response.body().getMessage();
+//                    if (200 == response.body().getCode()) {
+//                        dialog.dismiss();
+//
+//                        ST_MDH_SEQNO =  response.body().getData().getST_MDH_SEQNO();
+//                        formFiveDataResponseCall();
+//
+//                       /* if(response.body().getData().getST_MDH_SEQNO() != 0){
+//                            txt_seqno.setText(" : "+response.body().getData().getST_MDH_SEQNO() );
+//                        }
+//                        if(response.body().getData().getST_MDH_DCNO() != null){
+//                            txt_dcno.setText(" : "+response.body().getData().getST_MDH_DCNO() );
+//                        }
+//                        if(response.body().getData().getST_MDH_BILLTO() != null){
+//                            txt_billdo.setText(" : "+response.body().getData().getST_MDH_BILLTO() );
+//                        }
+//                        if(response.body().getData().getST_MDH_VEHICLENO() != null){
+//                            txt_vehicleno.setText(" : "+response.body().getData().getST_MDH_VEHICLENO() );
+//                        }
+//                        if(response.body().getData().getST_MDH_GPNO() != null){
+//                            txt_gpno.setText(" : "+response.body().getData().getST_MDH_GPNO() );
+//                        }
+//                        if(response.body().getData().getST_MDH_GPDT() != null){
+//                            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//                            @SuppressLint("SimpleDateFormat") SimpleDateFormat output = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+//                            Date d = null;
+//                            try {
+//                                d = sdf.parse(response.body().getData().getST_MDH_GPDT());
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
+//                            }
+//                            String formattedTime = output.format(d);
+//                            txt_gpdate.setText(" : "+formattedTime );
+//                        }
+//*/
+//
+//
+//
+//                    } else {
+//                        dialog.dismiss();
+//
+//                    }
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<ViewInfoResponse> call, @NonNull Throwable t) {
+//                dialog.dismiss();
+//                Log.e(TAG, "--->" + t.getMessage());
+//                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//    }
+//    private JobFetchAddressRequest jobFetchAddressRequest() {
+//
+//        /*
+//         * job_no : 61f222396667ac391fc85c55
+//
+//         */
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
+//        String currentDateandTime = sdf.format(new Date());
+//        JobFetchAddressRequest jobFetchAddressRequest = new JobFetchAddressRequest();
+//        jobFetchAddressRequest.setJob_no(job_id);
+//
+//
+//
+//        Log.w(TAG,"checkLocationRequest "+ new Gson().toJson(jobFetchAddressRequest));
+//        return jobFetchAddressRequest;
+//    }
+
+    private void join() {
+        Log.w(TAG, "joinInspectionCreateRequestCall url111111111111111111  :%s");
         dialog = new Dialog(InputFormFiveActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
 
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<ViewInfoResponse> call = apiInterface.ViewInfoRequestCall(RestUtils.getContentType(), jobFetchAddressRequest());
-        Log.w(TAG,"JobFetchAddressRequestCall url  :%s"+" "+ call.request().url().toString());
-
-        call.enqueue(new Callback<ViewInfoResponse>() {
-            @SuppressLint({"LogNotTimber", "SetTextI18n"})
+        Call<FormDataStoreResponse> call = apiInterface.joinInspectionCreate_newRequestCall(RestUtils.getContentType(), get());
+        Log.w(TAG, "joinInspectionCreateRequestCall url  :%s" + " " + call.request().url().toString());
+        dialog.dismiss();
+        call.enqueue(new Callback<FormDataStoreResponse>() {
+            @SuppressLint("LogNotTimber")
             @Override
-            public void onResponse(@NonNull Call<ViewInfoResponse> call, @NonNull Response<ViewInfoResponse> response) {
+            public void onResponse(@NonNull Call<FormDataStoreResponse> call, @NonNull Response<FormDataStoreResponse> response) {
 
-                Log.w(TAG,"startWorkRequestCall" + new Gson().toJson(response.body()));
+                Log.w(TAG, "joinInspectionCreateRequestCall" + new Gson().toJson(response.body()));
+
+             //   Toasty.success(getApplicationContext(), "ssss1" + message, Toasty.LENGTH_LONG).show();
+
+                dialog.dismiss();
+
                 if (response.body() != null) {
                     message = response.body().getMessage();
+
+                 //   Toasty.success(getApplicationContext(), "ssss2" + message, Toasty.LENGTH_LONG).show();
+
+                    dialog.dismiss();
+
                     if (200 == response.body().getCode()) {
-                        dialog.dismiss();
+                        if (response.body().getData() != null) {
 
-                        ST_MDH_SEQNO =  response.body().getData().getST_MDH_SEQNO();
-                        formFiveDataResponseCall();
+                        //    Toasty.success(getApplicationContext(), "ssss3" + message, Toasty.LENGTH_LONG).show();
 
-                       /* if(response.body().getData().getST_MDH_SEQNO() != 0){
-                            txt_seqno.setText(" : "+response.body().getData().getST_MDH_SEQNO() );
+                            dialog.dismiss();
                         }
-                        if(response.body().getData().getST_MDH_DCNO() != null){
-                            txt_dcno.setText(" : "+response.body().getData().getST_MDH_DCNO() );
-                        }
-                        if(response.body().getData().getST_MDH_BILLTO() != null){
-                            txt_billdo.setText(" : "+response.body().getData().getST_MDH_BILLTO() );
-                        }
-                        if(response.body().getData().getST_MDH_VEHICLENO() != null){
-                            txt_vehicleno.setText(" : "+response.body().getData().getST_MDH_VEHICLENO() );
-                        }
-                        if(response.body().getData().getST_MDH_GPNO() != null){
-                            txt_gpno.setText(" : "+response.body().getData().getST_MDH_GPNO() );
-                        }
-                        if(response.body().getData().getST_MDH_GPDT() != null){
-                            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                            @SuppressLint("SimpleDateFormat") SimpleDateFormat output = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                            Date d = null;
-                            try {
-                                d = sdf.parse(response.body().getData().getST_MDH_GPDT());
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            String formattedTime = output.format(d);
-                            txt_gpdate.setText(" : "+formattedTime );
-                        }
-*/
-
-
 
                     } else {
                         dialog.dismiss();
-
+                        Toasty.warning(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
                     }
                 }
-
 
             }
 
             @Override
-            public void onFailure(@NonNull Call<ViewInfoResponse> call, @NonNull Throwable t) {
-                dialog.dismiss();
+            public void onFailure(@NonNull Call<FormDataStoreResponse> call, @NonNull Throwable t) {
+                //  dialog.dismiss();
                 Log.e(TAG, "--->" + t.getMessage());
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
-    private JobFetchAddressRequest jobFetchAddressRequest() {
 
-        /*
-         * job_no : 61f222396667ac391fc85c55
+    private FormFiveDataResponse get() {
 
-         */
+        if (dataBeanList != null && dataBeanList.size() > 0) {
+
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
         String currentDateandTime = sdf.format(new Date());
-        JobFetchAddressRequest jobFetchAddressRequest = new JobFetchAddressRequest();
-        jobFetchAddressRequest.setJob_no(job_id);
 
+        FormFiveDataResponse formFiveDataResponse  = new FormFiveDataResponse();
+        formFiveDataResponse.setUser_id(userid);
+        formFiveDataResponse.setActivity_id(activity_id);
+        formFiveDataResponse.setJob_id(job_id);
+        formFiveDataResponse.setGroup_id(group_id);
+        formFiveDataResponse.setData(Data);
+        formFiveDataResponse.setStart_time("");
+        formFiveDataResponse.setPause_time("");
+        formFiveDataResponse.setStop_time("");
+        formFiveDataResponse.setStorage_status("");
+        formFiveDataResponse.setDate_of_create("");
+        formFiveDataResponse.setDate_of_update("");
+        formFiveDataResponse.setCreated_by("");
+        formFiveDataResponse.setUpdated_by("");
+        formFiveDataResponse.setUpdate_reason("");
 
+        Log.w(TAG, "Jobno Find Request next button " + new Gson().toJson(formFiveDataResponse));
+        Log.w(TAG, "data_store_management/create_Request form 5 Data " + new Gson().toJson(Data));
 
-        Log.w(TAG,"checkLocationRequest "+ new Gson().toJson(jobFetchAddressRequest));
-        return jobFetchAddressRequest;
+        return formFiveDataResponse;
     }
+
+    public void getfieldListFetchDataResponseCall() {
+        dialog = new Dialog(InputFormFiveActivity.this, R.style.NewProgressDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progroess_popup);
+        dialog.show();
+
+        //Creating an object of our api interface
+        APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
+        Call<GetFieldListResponse> call = apiInterface.getfieldListFetchDataResponseCall(RestUtils.getContentType(), getFieldListRequest_list());
+        Log.w(TAG, "url  :%sjoinInspectionGetFieldListRequestCall" + call.request().url().toString());
+
+        call.enqueue(new Callback<GetFieldListResponse>() {
+            @SuppressLint({"LogNotTimber", "SetTextI18n"})
+            @Override
+            public void onResponse(@NonNull Call<GetFieldListResponse> call, @NonNull Response<GetFieldListResponse> response) {
+
+
+                if (response.body() != null) {
+                    message = response.body().getMessage();
+                    if (200 == response.body().getCode()) {
+                        dialog.dismiss();
+
+                      //  ST_MDH_SEQNO =  response.body().getData().getST_MDH_SEQNO();
+                        formFiveDataResponseCall();
+
+                    } else {
+                        dialog.dismiss();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GetFieldListResponse> call, @NonNull Throwable t) {
+                dialog.dismiss();
+                Log.w(TAG, "joinInspectionGetFieldListResponseCall flr" + t.getMessage());
+            }
+        });
+
+    }
+
+    private GetFieldListRequest getFieldListRequest_list() {
+
+        GetFieldListRequest getFieldListRequest = new GetFieldListRequest();
+        getFieldListRequest.setGroup_id(group_id);
+        getFieldListRequest.setJob_id(job_id);
+        getFieldListRequest.setUser_id(_id); // _id
+        Log.w(TAG, "GetFieldListRequest " + new Gson().toJson(getFieldListRequest));
+        return getFieldListRequest;
+    }
+
+    private void delete_storage() {
+
+        APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
+        Call<Delete_StorageResponse> call = apiInterface.delete_storageResponseCall(RestUtils.getContentType(), delete_StorageRequest());
+        Log.w(VolleyLog.TAG,"SignupResponse url  :%s"+" "+ call.request().url().toString());
+
+        call.enqueue(new Callback<Delete_StorageResponse>() {
+            @SuppressLint("LogNotTimber")
+            @Override
+            public void onResponse(@NonNull Call<Delete_StorageResponse> call, @NonNull retrofit2.Response<Delete_StorageResponse> response) {
+
+                Log.w(VolleyLog.TAG, "SignupResponse" + new Gson().toJson(response.body()));
+                if (response.body() != null) {
+                    message = response.body().getMessage();
+
+                    if (200 == response.body().getCode()) {
+                        if (response.body().getData() != null) {
+
+                            Log.d("msg", message);
+
+                        }
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Delete_StorageResponse> call, @NonNull Throwable t) {
+                Log.e("OTP", "--->" + t.getMessage());
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+    private Delete_storageRequest delete_StorageRequest() {
+
+        Delete_storageRequest custom = new Delete_storageRequest();
+        custom.setJob_id(job_id);
+        custom.setGroup_id(group_id);
+        custom.setUser_id(_id); // _id
+        Log.w(VolleyLog.TAG,"loginRequest "+ new Gson().toJson(custom));
+        return custom;
+    }
+
 
     private void showSubmittedSuccessful() {
         Log.w(TAG, "showSubmittedSuccessful -->+");
@@ -1144,12 +1282,6 @@ btn_no.setOnClickListener(new View.OnClickListener() {
         });
         Objects.requireNonNull(submittedSuccessfulalertdialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         submittedSuccessfulalertdialog.show();
-
-
-
-
-
-
     }
 
 

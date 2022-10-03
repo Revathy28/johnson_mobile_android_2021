@@ -12,6 +12,7 @@ public class LoginRequest {
     private String user_id;
     private String user_password;
     private String last_login_time;
+    private String device_id;
 
     public String getUser_id() {
         return user_id;
@@ -35,5 +36,14 @@ public class LoginRequest {
 
     public void setLast_login_time(String last_login_time) {
         this.last_login_time = last_login_time;
+    }
+
+
+    public String getDevice_id() {
+        return device_id;
+    }
+
+    public void setDevice_id(String device_id) {
+        this.device_id = device_id;
     }
 }

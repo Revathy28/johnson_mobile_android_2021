@@ -1,15 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.huxq17.android:SwipeCardsView:1.3.5@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/fc31f29edf964f17e7eed30ad42fdbfa/transformed/jetified-SwipeCardsView-1.3.5/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/fc31f29edf964f17e7eed30ad42fdbfa/transformed/jetified-SwipeCardsView-1.3.5/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/fc31f29edf964f17e7eed30ad42fdbfa/transformed/jetified-SwipeCardsView-1.3.5/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/51b86c244272415b38285fdd32ac60f7/transformed/jetified-SwipeCardsView-1.3.5/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/51b86c244272415b38285fdd32ac60f7/transformed/jetified-SwipeCardsView-1.3.5/res" />
+      <root url="file://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/transforms-3/51b86c244272415b38285fdd32ac60f7/transformed/jetified-SwipeCardsView-1.3.5/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huxq17.android/SwipeCardsView/1.3.5/567fbe167d22b28fe610f7cb0df2c8ebea96150a/SwipeCardsView-1.3.5-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/modules-2/files-2.1/com.huxq17.android/SwipeCardsView/1.3.5/567fbe167d22b28fe610f7cb0df2c8ebea96150a/SwipeCardsView-1.3.5-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huxq17.android/SwipeCardsView/1.3.5/1e1d8e771550567af7627acaba249e51c5efe95d/SwipeCardsView-1.3.5-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../RecyclerInsetSelectShow-master/RecyclerInsetSelectShow-master/caches/modules-2/files-2.1/com.huxq17.android/SwipeCardsView/1.3.5/1e1d8e771550567af7627acaba249e51c5efe95d/SwipeCardsView-1.3.5-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

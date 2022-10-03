@@ -317,14 +317,11 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
                         || edt_dimx3.getText().toString().equals("")
                         || edt_dimx4.getText().toString().equals("")
                         || edt_dimy1.getText().toString().equals("")
-                        || edt_dimy2.getText().toString().equals("")
-                ) {
+                        || edt_dimy2.getText().toString().equals("")) {
 
-                    Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
-                    toast.show();
-                } else {
+                    Toasty.warning(getApplicationContext(),"please enter all required data",Toasty.LENGTH_LONG).show();
+                }
+                else {
 
                     i = i + 1;
 

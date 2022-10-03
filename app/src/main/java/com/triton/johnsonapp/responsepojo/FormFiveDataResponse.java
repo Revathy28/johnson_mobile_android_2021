@@ -39,6 +39,7 @@ public class FormFiveDataResponse {
     private String created_by;
     private String updated_by;
     private String update_reason;
+    private String ST_MDH_SEQNO;
 
     public String getUser_id() {
         return user_id;
@@ -150,6 +151,14 @@ public class FormFiveDataResponse {
 
     public void setUpdate_reason(String update_reason) {
         this.update_reason = update_reason;
+    }
+
+    public String getST_MDH_SEQNO() {
+        return ST_MDH_SEQNO;
+    }
+
+    public void setST_MDH_SEQNO(String ST_MDH_SEQNO) {
+        this.ST_MDH_SEQNO = ST_MDH_SEQNO;
     }
 
     public String getStatus() {

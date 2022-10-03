@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.triton.johnsonapp.Fetch_RM_Info_ListActivity;
 import com.triton.johnsonapp.Forms.ImageBasedInputFormActivity;
 import com.triton.johnsonapp.Forms.InputFormFiveActivity;
 import com.triton.johnsonapp.Forms.InputValueFormListActivity;
@@ -26,6 +27,7 @@ import com.triton.johnsonapp.Forms.RowBasedInputFormActivity;
 import com.triton.johnsonapp.R;
 
 import com.triton.johnsonapp.activity.CustomerDetailsActivity;
+import com.triton.johnsonapp.activity.MainActivity;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
@@ -129,9 +131,9 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
             }
         });
 
-        SharedPreferences sharedPreferences = getSharedPreferences("mykey", MODE_PRIVATE);
+    /*    SharedPreferences sharedPreferences = getSharedPreferences("mykey", MODE_PRIVATE);
         int form_type1 = sharedPreferences.getInt("form_type", 0);
-        Log.e("formtypeval", String.valueOf(form_type1));
+        Log.e("formmm", String.valueOf(form_type1));*/
 
         SharedPreferences sp = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         String work_state = sp.getString("work_s", "");
@@ -142,7 +144,7 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
             job_id = extras.getString("job_id");
             group_id = extras.getString("group_id");
              status = extras.getString("status");
-            fromactivity = extras.getString("fromactivity");
+             fromactivity = extras.getString("fromactivity");
             fromto = extras.getString("fromto");
             job_detail_no = extras.getString("job_detail_no");
             UKEY = extras.getString("UKEY");
@@ -159,21 +161,14 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
             back_address1 = extras.getString("back_address1");
             txt_customer_address.setText(back_address);
             Log.w(TAG, "back_address1" + back_address1);
-//            if (back_address1 == null){
-//                Pbar.setVisibility(View.GONE);
-//            }
-//           else if (back_address1.equals("back_address1")){
-//                Pbar.setVisibility(View.GONE);
-//            }
-//            else {
-//            }
 
-          //  Pbar.setVisibility(View.GONE);
+            Log.e("activity_id -->" , activity_id + "group_id -->" + group_id);
         }
 
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("myKey", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("jobid", job_id);
+        editor.putString("group_id_continue", group_id);
         editor.apply();
         if (job_id != null) {
             txt_job_no.setText("Job No : " + job_detail_no);
@@ -194,6 +189,8 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.w(TAG, "FormType---" + form_type);
+
+
                 if (form_type == 1) {
                     Intent intent = new Intent(getApplicationContext(), InputValueFormListActivity.class);
                     intent.putExtra("activity_id", activity_id);
@@ -211,7 +208,9 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
                     intent.putExtra("pause_count", pause_count);
                     intent.putExtra("form_type", form_type);
                     startActivity(intent);
-                } else if (form_type == 2) {
+                }
+
+                else if (form_type == 2) {
                     Intent intent = new Intent(getApplicationContext(), ImageBasedInputFormActivity.class);
                     intent.putExtra("activity_id", activity_id);
                     intent.putExtra("job_id", job_id);
@@ -264,7 +263,7 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
 
 
                 } else if (form_type == 5) {
-                    Intent intent = new Intent(getApplicationContext(), InputFormFiveActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), Fetch_RM_Info_ListActivity.class);
                     intent.putExtra("activity_id", activity_id);
                     intent.putExtra("job_id", job_id);
                     intent.putExtra("group_id", group_id);
@@ -292,14 +291,19 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent(ABCustomerDetailsActivity.this, ActivityJobListActivity.class);
         intent.putExtra("activity_id", activity_id);
+        intent.putExtra("group_id",group_id);
         intent.putExtra("status", status);
         intent.putExtra("UKEY", UKEY);
         intent.putExtra("form_type", form_type);
         intent.putExtra("new_count", new_count);
         intent.putExtra("pause_count", pause_count);
+        intent.putExtra("back", "back");
         startActivity(intent);
+//        Intent intent = new Intent(ABCustomerDetailsActivity.this, ActivityBasedActivity.class);
+//        startActivity(intent);
+//        overridePendingTransition(R.anim.new_right, R.anim.new_left);
         overridePendingTransition(R.anim.new_right, R.anim.new_left);
-
+        Log.d("group_iid",group_id);
     }
 
     @SuppressLint("LogNotTimber")

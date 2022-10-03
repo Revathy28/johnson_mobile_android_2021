@@ -105,7 +105,7 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
 
             Intent intent = new Intent(context, ActivityStatusActivity.class);
           //  Intent intent = new Intent(context, ActivityJobListActivity.class);
-
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("new_count",dataBeanList.get(position).getNEW_ACTIVITY());
             intent.putExtra("pause_count",dataBeanList.get(position).getWIP_ACTIVITY());
             intent.putExtra("activity_id",dataBeanList.get(position).get_id());
@@ -114,6 +114,7 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
             intent.putExtra("form_type",dataBeanList.get(position).getForm_type());
             context.startActivity(intent);
 
+             Log.d("id_dddddd",dataBeanList.get(position).get_id());
 
 
         });
